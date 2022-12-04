@@ -9,8 +9,8 @@ import java.sql.Statement;
 public class JdbcUtil {
 	
 	private static final String URL = "jdbc:mysql://127.0.0.1:3306/ineuron_db";
-	private static final String USERNAME = "swayam";
-	private static final String PASSWORD = "samflynn50";
+	private static final String USERNAME = "root";
+	private static final String PASSWORD = "root123";
 	
 	private JdbcUtil() {}
 	
