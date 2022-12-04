@@ -124,12 +124,17 @@ public class DBApp {
 	}
 	
 	private static void insertPlayer(String playerName, int playerJersey, String playerTeam, String playerCountry) {
-		String sqlInsertQuery = String.format("INSERT INTO players (pname, pjersey, pteam, pcountry) VALUES ('%s', %d, '%s', '%s');", playerName, playerJersey, playerTeam, playerCountry);
+		String sqlInsertQuery = "INSERT INTO players (pname, pjersey, pteam, pcountry) VALUES (?, ?, ?, ?);";
 	
 		try (
 				Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertQuery);
-			) {
+			) {	
+				preparedStatement.setString(1, playerName);
+				preparedStatement.setInt(2, playerJersey);
+				preparedStatement.setString(3, playerTeam);
+				preparedStatement.setString(4, playerCountry);
+			
 				int rowsAffected = preparedStatement.executeUpdate();
 			
 				if (rowsAffected != 0)
@@ -145,12 +150,14 @@ public class DBApp {
 	}
 	
 	private static void updatePlayer(String playerName, String fieldToUpdate, String valueToUpdate) {
-		String sqlUpdateQuery = String.format("UPDATE players SET %s = '%s' WHERE pname = '%s'", fieldToUpdate, valueToUpdate, playerName);
+		String sqlUpdateQuery = String.format("UPDATE players SET %s = '%s' WHERE pname = ?", fieldToUpdate, valueToUpdate);
 		
 		try (
 				Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateQuery);
 			) {
+				preparedStatement.setString(1, playerName);	
+			
 				int rowsAffected = preparedStatement.executeUpdate();
 			
 				if (rowsAffected != 0)
@@ -166,12 +173,14 @@ public class DBApp {
 	}
 	
 	private static void deletePlayer(String playerName) {
-		String sqlDeleteQuery = String.format("DELETE FROM players WHERE pname = '%s'", playerName);
+		String sqlDeleteQuery = "DELETE FROM players WHERE pname = ?";
 		
 		try (
 				Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteQuery);
 			) {
+				preparedStatement.setString(1, playerName);
+			
 				int rowsAffected = preparedStatement.executeUpdate(sqlDeleteQuery);
 			
 				if (rowsAffected != 0)
